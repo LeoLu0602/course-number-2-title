@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "Course Number 2 Title",
+  "description": "Convert course number to title",
+  "version": "1.0",
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": ""
+  }
+}
