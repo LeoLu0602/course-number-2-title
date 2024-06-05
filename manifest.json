@@ -4,7 +4,6 @@
   "description": "Convert course number to title",
   "version": "1.0",
   "action": {
-    "default_popup": "index.html",
-    "default_icon": ""
+    "default_popup": "./popup/popup.html"
   }
 }
