@@ -30,7 +30,13 @@ async function convert(
   department: string,
   courseNumber: string
 ): Promise<courseInfo | null> {
-  const res: Response = await fetch(API);
+  try {
+    const res: Response = await fetch(API);
 
-  return (await res.json()) as courseInfo | null;
+    return (await res.json()) as courseInfo | null;
+  } catch (err) {
+    console.error('[Course Number 2 Title] Error:', err);
+
+    return null;
+  }
 }

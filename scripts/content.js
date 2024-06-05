@@ -22,7 +22,13 @@ body.addEventListener('dblclick', (e) => __awaiter(void 0, void 0, void 0, funct
 }));
 function convert(school, department, courseNumber) {
     return __awaiter(this, void 0, void 0, function* () {
-        const res = yield fetch(API);
-        return (yield res.json());
+        try {
+            const res = yield fetch(API);
+            return (yield res.json());
+        }
+        catch (err) {
+            console.error('[Course Number 2 Title] Error:', err);
+            return null;
+        }
     });
 }
