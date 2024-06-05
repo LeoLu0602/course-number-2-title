@@ -16,14 +16,14 @@ body.addEventListener('dblclick', (e) => __awaiter(void 0, void 0, void 0, funct
     if (selectedText && !Number.isNaN(Number(selectedText))) {
         const res = yield convert('The Ohio State University', 'CSE', selectedText);
         if (res) {
-            console.log('[Course Number 2 Title] res:', res);
+            console.log('[Course Number 2 Title] Response:', res);
         }
     }
 }));
 function convert(school, department, courseNumber) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const res = yield fetch(API);
+            const res = yield fetch(`${API}?school=${encodeURI(school)}&department=${encodeURI(department)}&courseNumber=${encodeURI(courseNumber)}`);
             return (yield res.json());
         }
         catch (err) {

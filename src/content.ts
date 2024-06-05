@@ -20,7 +20,7 @@ body.addEventListener('dblclick', async (e) => {
     );
 
     if (res) {
-      console.log('[Course Number 2 Title] res:', res);
+      console.log('[Course Number 2 Title] Response:', res);
     }
   }
 });
@@ -31,7 +31,9 @@ async function convert(
   courseNumber: string
 ): Promise<courseInfo | null> {
   try {
-    const res: Response = await fetch(API);
+    const res: Response = await fetch(
+      `${API}?school=${encodeURI(school)}&department=${encodeURI(department)}&courseNumber=${encodeURI(courseNumber)}`
+    );
 
     return (await res.json()) as courseInfo | null;
   } catch (err) {
