@@ -10,16 +10,32 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 const API = 'https://mocki.io/v1/8670d292-1dbb-4063-a74c-6ec9c2c81a81';
 const body = document.querySelector('body');
-body.addEventListener('dblclick', (e) => __awaiter(void 0, void 0, void 0, function* () {
+const box = document.createElement('p');
+setUp();
+function setUp() {
+    box.classList.add('box');
+    hideBox();
+    body.appendChild(box);
+    body.addEventListener('dblclick', handleDoubleClick);
+    body.addEventListener('click', handleClick);
+}
+function handleDoubleClick(e) {
     var _a, _b;
-    const selectedText = ((_b = (_a = window.getSelection()) === null || _a === void 0 ? void 0 : _a.toString()) !== null && _b !== void 0 ? _b : '').trim();
-    if (selectedText && !Number.isNaN(Number(selectedText))) {
-        const res = yield convert('The Ohio State University', 'CSE', selectedText);
-        if (res) {
-            console.log('[Course Number 2 Title] Response:', res);
+    return __awaiter(this, void 0, void 0, function* () {
+        const selectedText = ((_b = (_a = window.getSelection()) === null || _a === void 0 ? void 0 : _a.toString()) !== null && _b !== void 0 ? _b : '').trim();
+        if (selectedText && !Number.isNaN(Number(selectedText))) {
+            const res = yield convert('The Ohio State University', 'CSE', selectedText);
+            if (res) {
+                showBox(res);
+            }
         }
+    });
+}
+function handleClick(e) {
+    if (e.target !== box) {
+        hideBox();
     }
-}));
+}
 function convert(school, department, courseNumber) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -31,4 +47,13 @@ function convert(school, department, courseNumber) {
             return null;
         }
     });
+}
+function showBox({ school, department, courseNumber, courseTitle, }) {
+    box.classList.remove('hidden');
+    box.textContent = `${department} ${courseNumber} ${courseTitle}`;
+    body.appendChild(box);
+}
+function hideBox() {
+    box.classList.add('hidden');
+    box.textContent = 'Searching...';
 }

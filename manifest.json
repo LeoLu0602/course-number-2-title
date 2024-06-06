@@ -9,6 +9,7 @@
   "content_scripts": [
     {
       "js": ["scripts/content.js"],
+      "css": ["styles/styles.css"],
       "matches": ["*://*/*"]
     }
   ]
