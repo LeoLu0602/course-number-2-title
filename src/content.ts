@@ -24,6 +24,8 @@ async function handleDoubleClick(e: MouseEvent): Promise<void> {
   const selectedText: string = (window.getSelection()?.toString() ?? '').trim();
 
   if (selectedText && !Number.isNaN(Number(selectedText))) {
+    showBox();
+
     const res: courseInfo | null = await convert(
       'The Ohio State University',
       'CSE',
@@ -31,7 +33,7 @@ async function handleDoubleClick(e: MouseEvent): Promise<void> {
     );
 
     if (res) {
-      showBox(res);
+      updateBoxContent(res);
     }
   }
 }
@@ -60,18 +62,20 @@ async function convert(
   }
 }
 
-function showBox({
-  school,
-  department,
-  courseNumber,
-  courseTitle,
-}: courseInfo): void {
+function showBox(): void {
   box.classList.remove('hidden');
-  box.textContent = `${department} ${courseNumber} ${courseTitle}`;
-  body.appendChild(box);
 }
 
 function hideBox(): void {
   box.classList.add('hidden');
   box.textContent = 'Searching...';
+}
+
+function updateBoxContent({
+  school,
+  department,
+  courseNumber,
+  courseTitle,
+}: courseInfo): void {
+  box.textContent = `${department} ${courseNumber} ${courseTitle}`;
 }

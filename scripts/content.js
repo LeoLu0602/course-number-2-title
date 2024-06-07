@@ -24,9 +24,10 @@ function handleDoubleClick(e) {
     return __awaiter(this, void 0, void 0, function* () {
         const selectedText = ((_b = (_a = window.getSelection()) === null || _a === void 0 ? void 0 : _a.toString()) !== null && _b !== void 0 ? _b : '').trim();
         if (selectedText && !Number.isNaN(Number(selectedText))) {
+            showBox();
             const res = yield convert('The Ohio State University', 'CSE', selectedText);
             if (res) {
-                showBox(res);
+                updateBoxContent(res);
             }
         }
     });
@@ -48,12 +49,13 @@ function convert(school, department, courseNumber) {
         }
     });
 }
-function showBox({ school, department, courseNumber, courseTitle, }) {
+function showBox() {
     box.classList.remove('hidden');
-    box.textContent = `${department} ${courseNumber} ${courseTitle}`;
-    body.appendChild(box);
 }
 function hideBox() {
     box.classList.add('hidden');
     box.textContent = 'Searching...';
+}
+function updateBoxContent({ school, department, courseNumber, courseTitle, }) {
+    box.textContent = `${department} ${courseNumber} ${courseTitle}`;
 }
