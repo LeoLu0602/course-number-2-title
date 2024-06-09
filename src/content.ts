@@ -1,4 +1,4 @@
-interface courseInfo {
+interface CourseInfo {
   school: string;
   department: string;
   courseNumber: string;
