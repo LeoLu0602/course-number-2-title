@@ -1,10 +1,3 @@
-interface courseInfo {
-  school: string;
-  department: string;
-  courseNumber: string;
-  courseTitle: string;
-}
-
 const API: string = 'http://localhost:3001/api/v1/courses';
 const body: HTMLBodyElement = document.querySelector('body') as HTMLBodyElement;
 const box: HTMLElement = document.createElement('p');
