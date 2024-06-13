@@ -5,8 +5,7 @@ interface courseInfo {
   courseTitle: string;
 }
 
-const API: string = 'https://mocki.io/v1/8670d292-1dbb-4063-a74c-6ec9c2c81a81';
-
+const API: string = 'http://localhost:3001/api/v1/courses';
 const body: HTMLBodyElement = document.querySelector('body') as HTMLBodyElement;
 const box: HTMLElement = document.createElement('p');
 
@@ -14,10 +13,11 @@ setUp();
 
 function setUp(): void {
   box.classList.add('box');
-  hideBox();
   body.appendChild(box);
   body.addEventListener('dblclick', handleDoubleClick);
   body.addEventListener('click', handleClick);
+  hideBox();
+  updateBoxContent('Searching...');
 }
 
 async function handleDoubleClick(e: MouseEvent): Promise<void> {
@@ -26,14 +26,15 @@ async function handleDoubleClick(e: MouseEvent): Promise<void> {
   if (selectedText && !Number.isNaN(Number(selectedText))) {
     showBox();
 
-    const res: courseInfo | null = await convert(
-      'The Ohio State University',
-      'CSE',
-      selectedText
-    );
+    const school: string = 'The Ohio State University';
+    const department: string = 'CSE';
+    const courseNumber: string = selectedText;
+    const courseTitle: string = await search(school, department, selectedText);
 
-    if (res) {
-      updateBoxContent(res);
+    if (courseTitle !== '') {
+      updateBoxContent(`${department} ${courseNumber} ${courseTitle}`);
+    } else {
+      updateBoxContent('Not Found.');
     }
   }
 }
@@ -41,24 +42,25 @@ async function handleDoubleClick(e: MouseEvent): Promise<void> {
 function handleClick(e: MouseEvent): void {
   if (e.target !== box) {
     hideBox();
+    updateBoxContent('Searching...');
   }
 }
 
-async function convert(
+async function search(
   school: string,
   department: string,
   courseNumber: string
-): Promise<courseInfo | null> {
+): Promise<string> {
   try {
     const res: Response = await fetch(
       `${API}?school=${encodeURI(school)}&department=${encodeURI(department)}&courseNumber=${encodeURI(courseNumber)}`
     );
 
-    return (await res.json()) as courseInfo | null;
+    return (await res.json()).courseTitle;
   } catch (err) {
     console.error('[Course Number 2 Title] Error:', err);
 
-    return null;
+    return '';
   }
 }
 
@@ -68,14 +70,8 @@ function showBox(): void {
 
 function hideBox(): void {
   box.classList.add('hidden');
-  box.textContent = 'Searching...';
 }
 
-function updateBoxContent({
-  school,
-  department,
-  courseNumber,
-  courseTitle,
-}: courseInfo): void {
-  box.textContent = `${department} ${courseNumber} ${courseTitle}`;
+function updateBoxContent(content: string): void {
+  box.textContent = content;
 }

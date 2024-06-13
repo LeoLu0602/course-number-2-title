@@ -8,16 +8,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const API = 'https://mocki.io/v1/8670d292-1dbb-4063-a74c-6ec9c2c81a81';
+const API = 'http://localhost:3001/api/v1/courses';
 const body = document.querySelector('body');
 const box = document.createElement('p');
 setUp();
 function setUp() {
     box.classList.add('box');
-    hideBox();
     body.appendChild(box);
     body.addEventListener('dblclick', handleDoubleClick);
     body.addEventListener('click', handleClick);
+    hideBox();
+    updateBoxContent('Searching...');
 }
 function handleDoubleClick(e) {
     var _a, _b;
@@ -25,9 +26,15 @@ function handleDoubleClick(e) {
         const selectedText = ((_b = (_a = window.getSelection()) === null || _a === void 0 ? void 0 : _a.toString()) !== null && _b !== void 0 ? _b : '').trim();
         if (selectedText && !Number.isNaN(Number(selectedText))) {
             showBox();
-            const res = yield convert('The Ohio State University', 'CSE', selectedText);
-            if (res) {
-                updateBoxContent(res);
+            const school = 'The Ohio State University';
+            const department = 'CSE';
+            const courseNumber = selectedText;
+            const courseTitle = yield search(school, department, selectedText);
+            if (courseTitle !== '') {
+                updateBoxContent(`${department} ${courseNumber} ${courseTitle}`);
+            }
+            else {
+                updateBoxContent('Not Found.');
             }
         }
     });
@@ -35,17 +42,18 @@ function handleDoubleClick(e) {
 function handleClick(e) {
     if (e.target !== box) {
         hideBox();
+        updateBoxContent('Searching...');
     }
 }
-function convert(school, department, courseNumber) {
+function search(school, department, courseNumber) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const res = yield fetch(`${API}?school=${encodeURI(school)}&department=${encodeURI(department)}&courseNumber=${encodeURI(courseNumber)}`);
-            return (yield res.json());
+            return (yield res.json()).courseTitle;
         }
         catch (err) {
             console.error('[Course Number 2 Title] Error:', err);
-            return null;
+            return '';
         }
     });
 }
@@ -54,8 +62,7 @@ function showBox() {
 }
 function hideBox() {
     box.classList.add('hidden');
-    box.textContent = 'Searching...';
 }
-function updateBoxContent({ school, department, courseNumber, courseTitle, }) {
-    box.textContent = `${department} ${courseNumber} ${courseTitle}`;
+function updateBoxContent(content) {
+    box.textContent = content;
 }
