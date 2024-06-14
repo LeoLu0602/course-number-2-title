@@ -1,5 +1,6 @@
 .box {
   position: fixed;
+  z-index: 999999;
   left: 1rem;
   bottom: 1rem;
   padding: 1rem;
